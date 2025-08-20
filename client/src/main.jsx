@@ -8,7 +8,7 @@ import { AuthProvider } from './context.jsx/Usercontext.jsx'
 const theme = createTheme({typography:{fontFamily:"Roboto slab,serif",allVariants:{color:"white"}}})
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    <AuthProvider>
+<AuthProvider>
 <BrowserRouter>
 <ThemeProvider theme={theme}>
    <App />
