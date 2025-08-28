@@ -69,16 +69,16 @@ const register = async (req, res) => {
 };
 
 const login = async (req,res)=>{
-const { error, value } = loginValidator.validate(req.body, { abortEarly: false });
+// const { error, value } = loginValidator.validate(req.body, { abortEarly: false });
 
-    if (error) {
-        return res.status(400).json({
-            success: false,
-            errors: error.details.map(err => err.message)
-        });
-    }
+    // if (error) {
+    //     return res.status(400).json({
+    //         success: false,
+    //         errors: error.details.map(err => err.message)
+    //     });
+    // }
 
-    const { email, password } = value;
+    const { email, password } = req.body;
   try {
 
     const user = await User.findOne({email:email});
@@ -154,8 +154,34 @@ const getAllusers = async (req, res) => {
   }
 };
 
+
+const logOutuser = async (req, res) => {
+  try {
+    res.clearCookie(process.env.COOKIE_NAME, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "strict",
+      signed: true,
+      path: "/",
+    });
+
+    return res.status(200).json({
+      success: true,
+      message: "User logged out successfully",
+    });
+  } catch (error) {
+    console.log("Logout error", error);
+    return res.status(500).json({
+      success: false,
+      message: "Internal server error during logout",
+    });
+  }
+};
+
+
 module.exports = {
   register,
   getAllusers,
-  login
+  login,
+  logOutuser
 };

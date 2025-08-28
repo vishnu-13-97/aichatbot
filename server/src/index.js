@@ -2,8 +2,6 @@ const app = require('./app')
 const port = process.env.PORT;
 const db = require('./config/db') 
 
-const cors = require('cors');
-app.use(cors())
 
 
 

@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 
 
  
-const NavigationLink = ({to,bg,text,textcolor}) => {
+const NavigationLink = ({to,bg,text,textcolor,onClick}) => {
   
 
   return (
@@ -11,7 +11,7 @@ const NavigationLink = ({to,bg,text,textcolor}) => {
    
    className='navlink'
    style={{background:bg , color:textcolor}} 
-   
+   onClick={onClick}
    >{text}</Link>
   )
 }
