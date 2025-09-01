@@ -1,5 +1,5 @@
 import { createContext, useContext, useEffect, useState } from "react";
-import { logOutUser, userLogin, userSignUp } from "../helpers/Api-helper";
+import { authStatus, logOutUser, userLogin, userSignUp } from "../helpers/Api-helper";
 
 
 
@@ -12,8 +12,23 @@ export const AuthProvider = ({children})=>{
 
 
     useEffect(()=>{
-    
+         const fetchUserData = async ()=>{
+
+      try {
+        
+     const data = await authStatus();
+     console.log("Auth data",data.user);
+     
+         setUser(data.user);
+      } catch (error) {
+                setUser(null);
+        throw new Error("unable to fetch data",error);
+       
+      }
+
+         }
           
+      fetchUserData();   
 
     },[])
 

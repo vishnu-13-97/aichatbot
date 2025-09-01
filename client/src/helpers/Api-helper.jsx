@@ -38,8 +38,25 @@ export const logOutUser = async ()=>{
         return res.data;
 
     } catch (error) {
-        throw new Error(error.response?.data?.message || "Unable to logot");
+        throw new Error(error.response?.data?.message || "Unable to logOut");
     }
   
 
 } 
+
+export const authStatus = async () => {
+  try {
+    const res = await axios.get("/user/auth-status", {
+      withCredentials: true, 
+    });
+
+    if (res.status !== 200) {
+      throw new Error("Unable to authenticate");
+    }
+
+    return res.data; 
+  } catch (error) {
+    console.error("Auth check failed:", error.message);
+    throw new Error(error.response?.data?.message || "Unable to authenticate");
+  }
+};

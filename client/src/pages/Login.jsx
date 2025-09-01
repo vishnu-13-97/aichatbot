@@ -1,41 +1,48 @@
-import { Box, Button, Typography } from "@mui/material";
+import { Box, Button, Typography, CircularProgress } from "@mui/material";
 import Custominput from "../components/shared/Custominput";
 import { CiLogin } from "react-icons/ci";
-import { useState } from "react";
+import {  useEffect, useState } from "react";
 import { useAuth } from "../context.jsx/Usercontext";
+import { toast } from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
-  const { logIn } = useAuth();
+  const { logIn , user} = useAuth();
+  const navigate = useNavigate();
+
   const [formData, setFormData] = useState({ email: "", password: "" });
-  const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
   const handleChange = (e) => {
     setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
-    
-  if (error) setError("");
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (!formData.email || !formData.password) {
-      setError("Please fill in all fields.");
+      toast.error("Please fill in all fields");
       return;
     }
 
-    setLoading(true);
-    setError("");
     try {
+      setLoading(true);
       await logIn(formData.email, formData.password);
-      console.log("Login successful:", formData);
+      toast.success("Signed in successfully");
+      setFormData({ email: "", password: "" });
     } catch (err) {
       console.error("Login error:", err.message);
-      setError(err.message || "Login failed. Please try again.");
+      toast.error(err.message || "Login failed. Please try again.");
     } finally {
       setLoading(false);
     }
   };
+
+  useEffect(() => {
+    if (user) {
+      navigate("/chats");
+    }
+  }, [user, navigate]);
 
   return (
     <Box width="100%" height="100%" display="flex" flex={1}>
@@ -67,7 +74,6 @@ const Login = () => {
             padding: "25px",
             boxShadow: "0px 4px 20px rgba(0,0,0,0.5)",
             borderRadius: "10px",
-            border: "none",
             maxWidth: "400px",
             width: "100%",
           }}
@@ -97,19 +103,21 @@ const Login = () => {
               onChange={handleChange}
             />
 
-            {error && (
-              <Typography color="error" textAlign="center" marginTop={2}>
-                {error}
-              </Typography>
-            )}
-
             <Button
               variant="contained"
               type="submit"
               disabled={loading}
-              sx={{ marginTop: 2 }}
+              sx={{ marginTop: 2, gap: 1 }}
             >
-              {loading ? "Logging in..." : "Login"} <CiLogin />
+              {loading ? (
+                <>
+                  <CircularProgress size={20} color="inherit" /> Logging in...
+                </>
+              ) : (
+                <>
+                  Login <CiLogin />
+                </>
+              )}
             </Button>
           </Box>
         </form>

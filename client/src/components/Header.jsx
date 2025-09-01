@@ -8,7 +8,8 @@ import {  useLocation, useNavigate } from "react-router-dom";
 const Header = () => {
   const { isLoggedIn, logOut } = useAuth();
   const location = useLocation();
-const navigate = useNavigate
+
+const navigate = useNavigate();
   const handleLogout = () => {
   logOut();
   navigate("/");

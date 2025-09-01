@@ -1,19 +1,33 @@
-import React from 'react'
-import { Link } from 'react-router-dom'
+import React from "react";
+import { Link } from "react-router-dom";
 
+const NavigationLink = ({ to, bg, text, textcolor, onClick }) => {
+  const styles = {
+    background: bg,
+    color: textcolor,
+    padding: "8px 16px",
+    borderRadius: "6px",
+    textDecoration: "none",
+    marginLeft: "8px",
+    cursor: "pointer",
+    display: "inline-block",
+  };
 
- 
-const NavigationLink = ({to,bg,text,textcolor,onClick}) => {
+  if (to) {
   
+    return (
+      <Link to={to} className="navlink" style={styles}>
+        {text}
+      </Link>
+    );
+  }
 
+  
   return (
-   <Link to={to}  
-   
-   className='navlink'
-   style={{background:bg , color:textcolor}} 
-   onClick={onClick}
-   >{text}</Link>
-  )
-}
+    <span onClick={onClick} style={styles} className="navlink">
+      {text}
+    </span>
+  );
+};
 
-export default NavigationLink
+export default NavigationLink;

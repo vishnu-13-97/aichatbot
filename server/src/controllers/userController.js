@@ -155,6 +155,24 @@ const getAllusers = async (req, res) => {
 };
 
 
+const getUserData = async(req,res)=>{
+ try {
+  const user = User.findById(req.user.id).select('-password');
+     if (!user) {
+      return res.status(404).json({ success: false, message: "User not found" });
+    }
+
+    res.json({
+      success: true,
+      user:req.user,
+    })
+ } catch (error) {
+      console.log(error);
+    return res.status(200).json({ message: "ERROR", cause: error.message });
+
+ }
+}
+
 const logOutuser = async (req, res) => {
   try {
     res.clearCookie(process.env.COOKIE_NAME, {
@@ -183,5 +201,6 @@ module.exports = {
   register,
   getAllusers,
   login,
-  logOutuser
+  logOutuser,
+  getUserData
 };
