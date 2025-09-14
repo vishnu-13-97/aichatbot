@@ -56,7 +56,9 @@ export const authStatus = async () => {
 
     return res.data; 
   } catch (error) {
-    console.error("Auth check failed:", error.message);
-    throw new Error(error.response?.data?.message || "Unable to authenticate");
+   if (error.response?.status === 401) {
+      return null; 
+    }
+    throw error; 
   }
 };

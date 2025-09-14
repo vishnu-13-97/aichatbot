@@ -10,27 +10,23 @@ export const AuthProvider = ({children})=>{
     const [user,setUser]=useState(null);
     const [isLoggedIn,setIsLoggedIn] = useState(false);
 
+useEffect(() => {
+  const fetchUserData = async () => {
+    try {
+      const data = await authStatus();
+      console.log("Auth data", data.user);
 
-    useEffect(()=>{
-         const fetchUserData = async ()=>{
+      setUser(data.user);
+      setIsLoggedIn(true);
+    } catch (error) {
+      console.log("User not logged in",error); 
+      setUser(null);
+     setIsLoggedIn(false)
+    }
+  };
 
-      try {
-        
-     const data = await authStatus();
-     console.log("Auth data",data.user);
-     
-         setUser(data.user);
-      } catch (error) {
-                setUser(null);
-        throw new Error("unable to fetch data",error);
-       
-      }
-
-         }
-          
-      fetchUserData();   
-
-    },[])
+  fetchUserData();
+}, []);
 
     const logIn = async(email,password)=>{
     try {

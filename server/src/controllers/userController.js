@@ -106,7 +106,7 @@ const login = async (req,res)=>{
   });
 
    
-    const token = generateToken({id:user._id,email:user.email});
+    const token = generateToken({id:user._id,email:user.email,name:user.name});
 
    res.cookie(process.env.COOKIE_NAME, token, {
       httpOnly: true,  
